@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class ApiController {
+public class PersonController {
 
     @Autowired
     private ApiService apiService;
@@ -40,20 +40,20 @@ public class ApiController {
         return "yo";
     }
 
-    @GetMapping("/all")
-    public Iterable<Person> getAll() {
-
-        return apiService.getAll();
+//    @GetMapping("/all")
+//    public Iterable<Person> getAll() {
+//
 //        return apiService.getAll();
-    }
+////        return apiService.getAll();
+//    }
 
     @GetMapping("/person")
-    public Iterable<Person> getPersons() {
+    public Iterable<Person> getAll() {
         return apiService.getAll();
     }
 
     @GetMapping("/person/{id}")
-    public Person getPerson(@PathVariable("id") Integer id) {
+    public Person getById(@PathVariable("id") Integer id) {
         Person person = null;
         if (apiService.getPerson(id).isPresent()) {
             person = apiService.getPerson(id).get();
@@ -62,12 +62,12 @@ public class ApiController {
     }
 
     @PostMapping("/person")
-    public void createPerson(@ModelAttribute Person person) {
+    public void create(@ModelAttribute Person person) {
         return ;
     }
 
     @PutMapping("/person")
-    public void updatePerson(@ModelAttribute Person person) {
+    public void update(@ModelAttribute Person person) {
         return ;
     }
 }

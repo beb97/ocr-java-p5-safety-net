@@ -1,6 +1,6 @@
 package com.beb97.safetynet;
 
-import com.beb97.safetynet.controller.ApiController;
+import com.beb97.safetynet.controller.PersonController;
 import com.beb97.safetynet.service.ApiService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.EmptyStackException;
-
-@WebMvcTest(controllers = ApiController.class)
-public class ApiControllerTest {
+@WebMvcTest(controllers = PersonController.class)
+public class PersonControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -26,9 +24,14 @@ public class ApiControllerTest {
 
     @Test
     public void testGetAll() throws Exception {
-        mockMvc.perform(get("/all"))
+        mockMvc.perform(get("/person"))
                 .andExpect(status().isOk());
+    }
 
-//        .andExpect();
+    @Test
+    public void testGet() throws Exception {
+
+        mockMvc.perform(get("/person/1"))
+                .andExpect(status().isOk());
     }
 }

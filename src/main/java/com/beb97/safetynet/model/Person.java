@@ -20,6 +20,16 @@ public class Person {
     String phone;
     String email;
 
+    public Person(String firstName, String lastName, String address, String city, Integer zip, String phone, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.zip = zip;
+        this.phone = phone;
+        this.email = email;
+    }
+
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,6 +37,13 @@ public class Person {
 
     public Person() {
         this("Pierre", "Bébon");
+        this.firstName = "pierre";
+        this.lastName = "bébon";
+        this.address = "21 la rouaudiere";
+        this.city = "paris";
+        this.zip = 44900;
+        this.phone = "0614364136";
+        this.email = "bebon.pierre@gmail";
     }
 }
 
