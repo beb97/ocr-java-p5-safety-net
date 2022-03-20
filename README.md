@@ -4,6 +4,8 @@ https://openclassrooms.com/fr/projects/creez-votre-premiere-application-web-avec
 https://github.com/beb97/ocr-java-p5-safety-net
 # DATA : 
 https://s3-eu-west-1.amazonaws.com/course.oc-static.com/projects/DA+Java+EN/P5+/data.json
+# TRELLO :
+https://trello.com/b/nKzDMtg6/java-p5
 
 
 # H2 :

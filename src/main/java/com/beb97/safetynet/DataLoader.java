@@ -1,8 +1,8 @@
 package com.beb97.safetynet;
 
-import com.beb97.safetynet.dao.FireStationDao;
-import com.beb97.safetynet.dao.MedicalRecordDao;
-import com.beb97.safetynet.dao.PersonDao;
+import com.beb97.safetynet.repository.FireStationDao;
+import com.beb97.safetynet.repository.MedicalRecordDao;
+import com.beb97.safetynet.repository.PersonDao;
 import com.beb97.safetynet.model.FireStation;
 import com.beb97.safetynet.model.MedicalRecord;
 import com.beb97.safetynet.model.Person;

@@ -1,16 +1,20 @@
 package com.beb97.safetynet.controller;
 
 import com.beb97.safetynet.model.Person;
-import com.beb97.safetynet.service.ApiService;
+import com.beb97.safetynet.service.PersonService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,56 +22,60 @@ import java.util.List;
 public class PersonController {
 
     @Autowired
-    private ApiService apiService;
+    private PersonService personService;
 
     @GetMapping("/")
     public String getHome() {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectReader objectReader = objectMapper.readerFor(new TypeReference<List<Person>>() {});
-        List<Person> persons = new ArrayList<>();
-
-        JsonNode jsonNode;
-        try {
-            jsonNode = objectMapper.readTree(new File("src/main/resources/data.json"));
-            persons = objectReader.readValue(jsonNode.get("persons"));
-
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-        }
-
-        return "yo";
+        return "home sweet home";
     }
-
-//    @GetMapping("/all")
-//    public Iterable<Person> getAll() {
-//
-//        return apiService.getAll();
-////        return apiService.getAll();
-//    }
 
     @GetMapping("/person")
     public Iterable<Person> getAll() {
-        return apiService.getAll();
+        return personService.getAll();
     }
 
     @GetMapping("/person/{id}")
-    public Person getById(@PathVariable("id") Integer id) {
-        Person person = null;
-        if (apiService.getPerson(id).isPresent()) {
-            person = apiService.getPerson(id).get();
+    public ResponseEntity<Person> getById(@PathVariable("id") Integer id) {
+        Person person = personService.getById(id);
+        if (null == person) {
+            return ResponseEntity.notFound().build();
         }
-        return person;
+        return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
     @PostMapping("/person")
-    public void create(@ModelAttribute Person person) {
-        return ;
+    public ResponseEntity<Person> create(@RequestBody Person person) {
+        Person personSaved = personService.save(person);
+        if (null == personSaved) {
+            return ResponseEntity.noContent().build();
+        }
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(personSaved.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
-    @PutMapping("/person")
-    public void update(@ModelAttribute Person person) {
-        return ;
+    @PutMapping("/person/{id}")
+    public ResponseEntity<Object> update(@RequestBody Person personne,
+                       @PathVariable("id") Integer id) {
+        Boolean updated = personService.update(personne, id);
+        if (!updated) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
+
+
+    @DeleteMapping("/person/{id}")
+    public ResponseEntity<Person> deleteById(@PathVariable("id") Integer id) {
+        personService.deleteById(id);
+
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
+
 }

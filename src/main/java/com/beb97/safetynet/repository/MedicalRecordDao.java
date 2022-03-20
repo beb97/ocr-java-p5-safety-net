@@ -1,4 +1,4 @@
-package com.beb97.safetynet.dao;
+package com.beb97.safetynet.repository;
 
 import com.beb97.safetynet.model.MedicalRecord;
 import org.springframework.data.jpa.repository.JpaRepository;

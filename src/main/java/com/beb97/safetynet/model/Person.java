@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Data
 @Entity
@@ -12,6 +13,7 @@ public class Person {
     @Id
     @GeneratedValue
     private int id;
+    @Size(min = 3, max = 25)
     String firstName;
     String lastName;
     String address;
@@ -37,13 +39,13 @@ public class Person {
 
     public Person() {
         this("Pierre", "Bébon");
-        this.firstName = "pierre";
-        this.lastName = "bébon";
-        this.address = "21 la rouaudiere";
-        this.city = "paris";
-        this.zip = 44900;
-        this.phone = "0614364136";
-        this.email = "bebon.pierre@gmail";
+//        this.firstName = "pierre";
+//        this.lastName = "bébon";
+//        this.address = "21 la rouaudiere";
+//        this.city = "paris";
+//        this.zip = 44900;
+//        this.phone = "0614364136";
+//        this.email = "bebon.pierre@gmail";
     }
 }
 
