@@ -30,35 +30,46 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     MedicalRecordDao medicalRecordDao;
 
-    public void run(ApplicationArguments args) {
+    String jsonFileName = "src/main/resources/data.json";
+    ObjectMapper objectMapper;
+    JsonNode jsonTree;
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-
-        JsonNode jsonNode;
+    DataLoader() {
+        objectMapper = new ObjectMapper();
+        File jsonFile = new File(jsonFileName);
         try {
-            File jsonFile = new File("src/main/resources/data.json");
-            jsonNode = objectMapper.readTree(jsonFile);
-
-            List<Person> persons = new ArrayList<>();
-            ObjectReader personReader = objectMapper.readerFor(new TypeReference<List<Person>>() {});
-            persons = personReader.readValue(jsonNode.get("persons"));
-            personDao.saveAll(persons);
-
-            List<FireStation> fireStations = new ArrayList<>();
-            ObjectReader fireStationReader = objectMapper.readerFor(new TypeReference<List<FireStation>>() {});
-            fireStations = fireStationReader.readValue(jsonNode.get("firestations"));
-            fireStationDao.saveAll(fireStations);
-
-            ObjectReader medicalRecordReader = objectMapper.readerFor(new TypeReference<List<MedicalRecord>>() {});
-            List<MedicalRecord> medicalRecords = new ArrayList<>();
-            medicalRecords = medicalRecordReader.readValue(jsonNode.get("medicalrecords"));
-            medicalRecordDao.saveAll(medicalRecords);
-
-        } catch (IOException ioException) {
+            jsonTree = objectMapper.readTree(jsonFile);
+        }catch (IOException ioException) {
             ioException.printStackTrace();
         } finally {
-        }
 
+        }
+    }
+
+    public void run(ApplicationArguments args) {
+        if (null != jsonTree) {
+            try {
+                List<Person> persons = getListFromJson("persons", Person.class);
+                personDao.saveAll(persons);
+
+                List<FireStation> fireStations = getListFromJson("firestations", FireStation.class);
+                fireStationDao.saveAll(fireStations);
+
+                List<MedicalRecord> medicalRecords = getListFromJson("medicalrecords", MedicalRecord.class);
+                medicalRecordDao.saveAll(medicalRecords);
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            } finally {
+            }
+        }
+    }
+
+    public <T> List<T> getListFromJson(String nodeName, Class<T> nodeClass) throws IOException {
+        List list = new ArrayList<T>();
+        for(JsonNode jsonNode : jsonTree.get(nodeName)) {
+            list.add(objectMapper.treeToValue(jsonNode, nodeClass));
+        }
+        return list;
     }
 }

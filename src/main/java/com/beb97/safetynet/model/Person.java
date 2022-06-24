@@ -22,6 +22,7 @@ public class Person {
     String phone;
     String email;
 
+    // constructeur
     public Person(String firstName, String lastName, String address, String city, Integer zip, String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;

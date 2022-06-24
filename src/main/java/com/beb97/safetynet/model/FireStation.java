@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class FireStation {
     @Id
     @GeneratedValue
-    private int id;
-    String station;
-    String address;
+    private int id; // null
+    String station; // null
+    String address; // addresse
 }
